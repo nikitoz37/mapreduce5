@@ -1,14 +1,16 @@
-FROM python:3
+FROM python:3.10
 
 WORKDIR /master
 
-COPY requirements.txt requirements.txt
+ENV FLASK_APP=master.py
+ENV FLASK_RUN_HOST=0.0.0.0
+RUN python -m pip install --upgrade pip
 
-RUN python -m pip install --upgrade pip && python -m pip install -r requirements.txt
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
 
 EXPOSE 8000
 
 COPY . .
 
-#CMD ["python", "master.py"]
-CMD [ "flask", "run", "--host=0.0.0.0", "--port=8000"]
+CMD [ "flask", "run" ]

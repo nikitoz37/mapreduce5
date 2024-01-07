@@ -1,14 +1,16 @@
-FROM python:3
+FROM python:3.10
 
 WORKDIR /slave1
 
+ENV FLASK_APP=slave.py
+ENV FLASK_RUN_HOST=0.0.0.0
+RUN python -m pip install --upgrade pip
+
 COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
 
-RUN python -m pip install --upgrade pip && python -m pip install -r requirements.txt
-
-EXPOSE 6001
+EXPOSE 8001
 
 COPY . .
 
-#CMD ["python", "slave.py"]
-CMD [ "flask", "run", "--host=0.0.0.0", "--port=8001"]
+CMD [ "flask", "run" ]
