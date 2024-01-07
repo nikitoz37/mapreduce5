@@ -44,23 +44,26 @@ services:
     #  POSTGRES_USER_FILE: /run/secrets/postgres_user
     #  POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
       DB_URL: postgresql://postgres:postgres@db:5432/postgres
+      FLASK_DEBUG: "true"
     ports:
-      - "8000:8000"
+      - "8000:5000"
     #networks:
     #  - mapreduce-network
     depends_on:
       - db
       - slave1
   #    - slave2
-# https://github.com/khristoforovs/flask-postgres-docker-compose-simple-app.git
+
   slave1:
     container_name: slave1
     restart: always
     build: 
       context: ./slave
       dockerfile: slave1.Dockerfile
+    environment:
+      FLASK_DEBUG: "true"
     ports:
-      - "8001:8001"
+      - "8001:5001"
   #  networks:
   #    - mapreduce-network
   #  depends_on:
