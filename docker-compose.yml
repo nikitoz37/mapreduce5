@@ -52,7 +52,7 @@ services:
       - db
       - slave1
   #    - slave2
-
+# https://github.com/khristoforovs/flask-postgres-docker-compose-simple-app.git
   slave1:
     container_name: slave1
     restart: always
