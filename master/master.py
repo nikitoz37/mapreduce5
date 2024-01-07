@@ -1,4 +1,6 @@
 
+#import time
+
 from flask import Flask
 from flask import request, render_template, redirect, url_for, make_response, jsonify
 from flask_sqlalchemy import SQLAlchemy
@@ -11,10 +13,9 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('DB_URL')
 db = SQLAlchemy(app)
 
-
 #from models import *
 
-class Post(db.Model):
+class Word(db.Model):
     __tablename__ = 'top_words'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -29,7 +30,10 @@ class Post(db.Model):
         return {'id': self.id,'word': self.word, 'email': self.num}
 
 
+#time.sleep(10)
 
+#with app.app_context():
+db.create_all()
 
 
 '''@app.route('/', methods=['GET'])
@@ -59,7 +63,7 @@ def index():
 
 
 
-db.create_all()
+
 
 #if __name__ == '__main__':
 #    app.run()
