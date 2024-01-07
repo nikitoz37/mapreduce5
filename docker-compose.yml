@@ -11,18 +11,19 @@ services:
   db:
     container_name: db
     restart: always
-    image: postgres
+    image: postgres:latest
     #secrets:
     #  - postgres_user
     #  - postgres_password
     ports:
-      - 5432:5432
+      - "5432:5432"
     environment:
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_DB=postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: top_words_db
     volumes:
-      - pgdata:/var/lib/postgresql/data
+    #  - pgdata:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql
     #networks:
     #  - mapreduce-network
 
@@ -43,7 +44,7 @@ services:
       #DATABASE_PORT: 5432
     #  POSTGRES_USER_FILE: /run/secrets/postgres_user
     #  POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
-      DB_URL: postgresql://postgres:postgres@db:5432/postgres
+      DB_URL: postgresql://postgres:postgres@db:5432/top_words_db
       FLASK_DEBUG: "true"
     ports:
       - "8000:5000"

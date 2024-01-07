@@ -21,15 +21,15 @@ class Post(db.Model):
     word = db.Column(db.String(30), unique=True, nullable=False)
     num = db.Column(db.Integer, nullable=False)
 
-    '''def __init__(self, word, num):
+    def __init__(self, word, num):
         self.word = word
-        self.num = num'''
+        self.num = num
     
     def json(self):
         return {'id': self.id,'word': self.word, 'email': self.num}
 
 
-db.create_all()
+
 
 
 '''@app.route('/', methods=['GET'])
@@ -58,6 +58,8 @@ def index():
     return 'Im master'
 
 
+
+db.create_all()
 
 #if __name__ == '__main__':
 #    app.run()
