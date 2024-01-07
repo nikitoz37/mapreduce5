@@ -1,0 +1,87 @@
+version: '3'
+
+#secrets:
+#  postgres_user:
+#    file: ./secrets/postgres_user.txt
+#  postgres_password:
+#    file: ./secrets/postgres_password.txt
+    
+
+services:
+  db:
+    container_name: db
+    restart: always
+    image: postgres
+    #secrets:
+    #  - postgres_user
+    #  - postgres_password
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    #networks:
+    #  - mapreduce-network
+
+  master:
+    container_name: master
+    restart: always
+    build: 
+      context: ./master
+      dockerfile: master.Dockerfile
+    #links:
+    #  - postgres:postgres
+    #secrets:
+    #  - postgres_user
+    #  - postgres_password
+    environment:
+    #  DEBUG: False
+    #  POSTGRES_DB: top_words_db
+      #DATABASE_PORT: 5432
+    #  POSTGRES_USER_FILE: /run/secrets/postgres_user
+    #  POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+      DB_URL: postgresql://postgres:postgres@db:5432/postgres
+    ports:
+      - 8000:8000
+    #networks:
+    #  - mapreduce-network
+    depends_on:
+      - db
+      - slave1
+  #    - slave2
+
+  slave1:
+    container_name: slave1
+    restart: always
+    build: 
+      context: ./slave
+      dockerfile: slave1.Dockerfile
+    ports:
+      - 8001:8001
+  #  networks:
+  #    - mapreduce-network
+  #  depends_on:
+  #    - postgres
+
+  #slave2:
+  #  container_name: slave2
+  #  build: ./slave2
+  #  restart: unless-stopped
+  #  ports:
+  #    - "6003:6003"
+  #  networks:
+  #    - mapreduce-network
+  #  depends_on:
+  #    - postgres
+
+
+volumes:
+  pgdata: {}
+
+
+#networks:
+#  mapreduce-network:
+#    driver: bridge
