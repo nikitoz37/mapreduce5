@@ -29,6 +29,9 @@ class Post(db.Model):
         return {'id': self.id,'word': self.word, 'email': self.num}
 
 
+db.create_all()
+
+
 '''@app.route('/', methods=['GET'])
 def index():
     posts = Post.query.order_by(Post.date_posted.desc()).all()
