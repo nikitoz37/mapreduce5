@@ -41,8 +41,8 @@ class User(db.Model):
         return {'id': self.id,'username': self.username, 'email': self.email}
 
 
-with app.app_context():
-    db.create_all()
+#with app.app_context():
+db.create_all()
 
 
 #create a test route
