@@ -11,4 +11,4 @@ EXPOSE 6002
 COPY . .
 
 #CMD ["python", "slave.py"]
-CMD [ "flask", "run", "--host=0.0.0.0", "--port=6002"]
+CMD [ "flask", "run", "--host=0.0.0.0", "--port=8002"]
