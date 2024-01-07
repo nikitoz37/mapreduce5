@@ -30,10 +30,37 @@ class Word(db.Model):
         return {'id': self.id,'word': self.word, 'email': self.num}
 
 
-#time.sleep(10)
+class User(db.Model):
+    __tablename__ = 'users'
 
-#with app.app_context():
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+
+    def json(self):
+        return {'id': self.id,'username': self.username, 'email': self.email}
+
+
 db.create_all()
+
+
+#create a test route
+@app.route('/test', methods=['GET'])
+def test():
+  return make_response(jsonify({'message': 'test route'}), 200)
+
+
+# create a user
+@app.route('/users', methods=['POST'])
+def create_user():
+  try:
+    data = request.get_json()
+    new_user = User(username=data['username'], email=data['email'])
+    db.session.add(new_user)
+    db.session.commit()
+    return make_response(jsonify({'message': 'user created'}), 201)
+  except e:
+    return make_response(jsonify({'message': 'error creating user'}), 500)
 
 
 '''@app.route('/', methods=['GET'])
@@ -51,9 +78,9 @@ def submit():
 
 
 
-@app.route('/test', methods=['GET'])
+'''@app.route('/test', methods=['GET'])
 def test():
-  return make_response(jsonify({'message': 'test route'}), 200)
+  return make_response(jsonify({'message': 'test route'}), 200)'''
 
 
 
