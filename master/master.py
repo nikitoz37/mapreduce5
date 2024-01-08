@@ -5,11 +5,11 @@ from flask import Flask
 from flask import request, render_template, redirect, url_for, make_response, jsonify
 from flask_sqlalchemy import SQLAlchemy
 #from config import BaseConfig
-#from os import environ
-import os
+from os import environ
+#import os
 
 
-
+'''
 with open(os.environ['POSTGRES_USER_FILE']) as f:
     _db_user = f.read()
 
@@ -23,15 +23,15 @@ class BaseConfig(object):
     DB_PASS = _db_pass
     DB_PORT = os.environ['DATABASE_PORT']
     SQLALCHEMY_DATABASE_URI = f'postgresql://{DB_USER}:{DB_PASS}@db:{DB_PORT}/{DB_NAME}'
-
-
-'''app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('DB_URL')
-db = SQLAlchemy(app)'''
+'''
 
 app = Flask(__name__)
-app.config.from_object(BaseConfig)
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('DB_URL')
 db = SQLAlchemy(app)
+
+'''app = Flask(__name__)
+app.config.from_object(BaseConfig)
+db = SQLAlchemy(app)'''
 
 #from models import *
 
