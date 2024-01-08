@@ -1,10 +1,10 @@
 version: '3'
 
-#secrets:
-#  postgres_user:
-#    file: ./secrets/postgres_user.txt
-#  postgres_password:
-#    file: ./secrets/postgres_password.txt
+secrets:
+  postgres_user:
+    file: ./secrets/postgres_user.txt
+  postgres_password:
+    file: ./secrets/postgres_password.txt
     
 
 services:
@@ -12,18 +12,19 @@ services:
     container_name: db
     restart: always
     image: postgres:latest
-    #secrets:
-    #  - postgres_user
-    #  - postgres_password
+    secrets:
+      - postgres_user
+      - postgres_password
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
       POSTGRES_DB: top_words_db
+      POSTGRES_USER_FILE: /run/secrets/postgres_user
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
     volumes:
-    #  - pgdata:/var/lib/postgresql/data
-      - pgdata:/var/lib/postgresql
+    #  - ./pgdata:/var/lib/postgresql/data/
+    #  - pgdata:/var/lib/postgresql
+    - pgdata:/var/lib/postgresql/data
     #networks:
     #  - mapreduce-network
 
@@ -33,27 +34,28 @@ services:
     build: 
       context: ./master
       dockerfile: master.Dockerfile
-    #links:
-    #  - postgres:postgres
-    #secrets:
-    #  - postgres_user
-    #  - postgres_password
+    links:
+      - db:db
+    secrets:
+      - postgres_user
+      - postgres_password
     environment:
-    #  DEBUG: False
-    #  POSTGRES_DB: top_words_db
-      #DATABASE_PORT: 5432
-    #  POSTGRES_USER_FILE: /run/secrets/postgres_user
-    #  POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
-      DB_URL: postgresql://postgres:postgres@db:5432/top_words_db
-      FLASK_DEBUG: "true"
+      DEBUG: False
+      POSTGRES_DB: top_words_db
+      DATABASE_PORT: 5432
+      POSTGRES_USER_FILE: /run/secrets/postgres_user
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+      #DB_URL: postgresql://postgres:postgres@db:5432/top_words_db
+      #FLASK_DEBUG: "true"
     ports:
       - "8000:5000"
+    network_mode: host
     #networks:
     #  - mapreduce-network
     depends_on:
       - db
       - slave1
-  #    - slave2
+      - slave2
 
   slave1:
     container_name: slave1
@@ -65,6 +67,7 @@ services:
       FLASK_DEBUG: "true"
     ports:
       - "8001:5000"
+    network_mode: host
   #  networks:
   #    - mapreduce-network
   #  depends_on:
@@ -80,6 +83,7 @@ services:
       FLASK_DEBUG: "true"
     ports:
       - "8002:5000"
+    network_mode: host
   #  networks:
   #    - mapreduce-network
   #  depends_on:
