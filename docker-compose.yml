@@ -49,7 +49,7 @@ services:
       #FLASK_DEBUG: "true"
     ports:
       - "8000:5000"
-    network_mode: host
+  #  network_mode: host
     #networks:
     #  - mapreduce-network
     depends_on:
@@ -67,7 +67,7 @@ services:
       FLASK_DEBUG: "true"
     ports:
       - "8001:5000"
-    network_mode: host
+  #  network_mode: host
   #  networks:
   #    - mapreduce-network
   #  depends_on:
@@ -83,7 +83,7 @@ services:
       FLASK_DEBUG: "true"
     ports:
       - "8002:5000"
-    network_mode: host
+  #  network_mode: host
   #  networks:
   #    - mapreduce-network
   #  depends_on:
